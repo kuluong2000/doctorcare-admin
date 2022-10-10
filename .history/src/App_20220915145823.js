@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Routes } from "react-router-dom";
 import DefaultLayout from "./components/Layout/defaultLayout/DefaultLayout";
 import OnlyContent from "./components/Layout/OnlyContent/OnlyContent";
-import routerPublic from "./router/routes";
+import routerPublic from "./router";
 import Loading from "./components/Loading/Loading";
 import Home from "./components/Page/Home/Home";
 // import lib bootstrap css
 import "bootstrap/dist/css/bootstrap.min.css";
-//import css
-
-import "./assets/css/globalStyle.scss";
 function App() {
   const [show, setShow] = useState(false);
   useEffect(() => {

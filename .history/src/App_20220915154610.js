@@ -7,9 +7,6 @@ import Loading from "./components/Loading/Loading";
 import Home from "./components/Page/Home/Home";
 // import lib bootstrap css
 import "bootstrap/dist/css/bootstrap.min.css";
-//import css
-
-import "./assets/css/globalStyle.scss";
 function App() {
   const [show, setShow] = useState(false);
   useEffect(() => {
