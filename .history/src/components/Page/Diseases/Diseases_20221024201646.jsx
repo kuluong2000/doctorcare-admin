@@ -2,7 +2,7 @@ import React from "react";
 import "antd/dist/antd.css";
 import { Space, Table } from "antd";
 import classNames from "classnames/bind";
-import styles from "./department.module.scss";
+import styles from "./diseases.module.scss";
 import Button from "../../common/Button/Button";
 import Modals from "../../Layout/Popper/Modal";
 
@@ -10,7 +10,8 @@ import { openModal, hideModal } from "../../../redux/action";
 import { useDispatch } from "react-redux";
 
 const cx = classNames.bind(styles);
-export default function Department() {
+
+export default function Diseases() {
   const dispatch = useDispatch();
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
@@ -41,17 +42,13 @@ export default function Department() {
       dataIndex: "desc",
       key: "desc",
     },
+
     {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
+      title: "Tên khoa",
+      dataIndex: "department",
+      key: "department",
     },
-    {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (t, r) => <img src={`${r.image}`} alt="" />,
-    },
+
     {
       title: "Action",
       key: "action",
@@ -72,10 +69,9 @@ export default function Department() {
   const data = [
     {
       key: "1",
-      name: "Khoa nhi",
-      desc: "Khoa nhi",
-      price: 1000,
-      image: "",
+      name: "Thị lực",
+      desc: "Thị lực",
+      department: "Nhãn khoa",
     },
   ];
   return (

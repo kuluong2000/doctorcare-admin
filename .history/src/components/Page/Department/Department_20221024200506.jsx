@@ -87,8 +87,8 @@ export default function Department() {
         <Modals onCancel={onCancel} handleOk={handleOk}>
           <form className={cx("form")}>
             <div className={cx("form-item")}>
-              <label htmlFor="">Tên khoa</label>
-              <input type="text" placeholder="vui lòng nhập vào tên khoa" />
+              <label htmlFor="">Tên thuốc</label>
+              <input type="text" placeholder="vui lòng nhập vào tên thuốc" />
             </div>
             <div className={cx("form-item")}>
               <label htmlFor="">Mô tả</label>
@@ -96,12 +96,8 @@ export default function Department() {
             </div>
 
             <div className={cx("form-item")}>
-              <label htmlFor="">Giá tiền</label>
-              <input type="number" placeholder="vui lòng nhập giá tiền" />
-            </div>
-            <div className={cx("form-item")}>
-              <label htmlFor="">Hình ảnh</label>
-              <input type="file" />
+              <label htmlFor="">Số Lượng</label>
+              <input type="number" placeholder="vui lòng nhập số Lượng" />
             </div>
             <div className={cx("form-item")}>
               <label htmlFor="">Ngày tạo</label>

@@ -38,11 +38,6 @@ export default function SideBar() {
       title: "Quản lý Bệnh tật",
       to: "quan-ly-benh-tat",
     },
-    {
-      icon: <FontAwesomeIcon icon={faDesktop}></FontAwesomeIcon>,
-      title: "Quản lý Chức vụ",
-      to: "quan-ly-chuc-vu",
-    },
   ];
   // logic
   const handleClick = (e) => {

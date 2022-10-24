@@ -1,8 +1,7 @@
-import React from "react";
 import "antd/dist/antd.css";
 import { Space, Table } from "antd";
 import classNames from "classnames/bind";
-import styles from "./department.module.scss";
+import styles from "./position.module.scss";
 import Button from "../../common/Button/Button";
 import Modals from "../../Layout/Popper/Modal";
 
@@ -10,7 +9,7 @@ import { openModal, hideModal } from "../../../redux/action";
 import { useDispatch } from "react-redux";
 
 const cx = classNames.bind(styles);
-export default function Department() {
+export default function Position() {
   const dispatch = useDispatch();
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
@@ -42,17 +41,6 @@ export default function Department() {
       key: "desc",
     },
     {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (t, r) => <img src={`${r.image}`} alt="" />,
-    },
-    {
       title: "Action",
       key: "action",
       fixed: "right",
@@ -72,12 +60,11 @@ export default function Department() {
   const data = [
     {
       key: "1",
-      name: "Khoa nhi",
-      desc: "Khoa nhi",
-      price: 1000,
-      image: "",
+      name: "Tim mạch",
+      desc: "Tim mạch",
     },
   ];
+
   return (
     <>
       <div className={cx("btn-create")}>
@@ -87,25 +74,12 @@ export default function Department() {
         <Modals onCancel={onCancel} handleOk={handleOk}>
           <form className={cx("form")}>
             <div className={cx("form-item")}>
-              <label htmlFor="">Tên khoa</label>
-              <input type="text" placeholder="vui lòng nhập vào tên khoa" />
+              <label htmlFor="">Tên thuốc</label>
+              <input type="text" placeholder="vui lòng nhập vào tên thuốc" />
             </div>
             <div className={cx("form-item")}>
               <label htmlFor="">Mô tả</label>
               <input type="text" placeholder="vui lòng nhập vào Mô tả" />
-            </div>
-
-            <div className={cx("form-item")}>
-              <label htmlFor="">Giá tiền</label>
-              <input type="number" placeholder="vui lòng nhập giá tiền" />
-            </div>
-            <div className={cx("form-item")}>
-              <label htmlFor="">Hình ảnh</label>
-              <input type="file" />
-            </div>
-            <div className={cx("form-item")}>
-              <label htmlFor="">Ngày tạo</label>
-              <input type="date" placeholder="vui lòng nhập ngày tạo" />
             </div>
           </form>
         </Modals>

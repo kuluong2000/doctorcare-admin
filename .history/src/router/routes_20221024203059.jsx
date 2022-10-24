@@ -7,7 +7,7 @@ const Doctor = React.lazy(() => import("../components/Page/Doctor/Doctor"));
 const Medicine = React.lazy(() => import("../components/Page/Medicine/Medicine"));
 const Department = React.lazy(() => import("../components/Page/Department/Department"));
 const Diseases = React.lazy(() => import("../components/Page/Diseases/Diseases"));
-const Position = React.lazy(() => import("../components/Page/Position/Position"));
+// const Position = React.lazy(() => import("../components/Page/Position/Position"));
 
 const ErrorPage = React.lazy(() => {
   return new Promise((resolve) => {
@@ -46,11 +46,11 @@ const routerPublic = [
     component: Diseases,
     layout: null,
   },
-  {
-    path: "/quan-tri/quan-ly-chuc-vu",
-    component: Position,
-    layout: null,
-  },
+  // {
+  //   path: "/quan-tri/quan-ly-chuc-vu",
+  //   component: Position,
+  //   layout: null,
+  // },
 
   {
     path: "/quan-tri/login",

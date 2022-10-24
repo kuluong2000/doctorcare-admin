@@ -10,7 +10,8 @@ import { openModal, hideModal } from "../../../redux/action";
 import { useDispatch } from "react-redux";
 
 const cx = classNames.bind(styles);
-export default function Department() {
+
+export default function Diseases() {
   const dispatch = useDispatch();
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
