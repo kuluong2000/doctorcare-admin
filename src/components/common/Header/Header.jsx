@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);
 export default function Header({ data }) {
-  console.log(data);
   const dispatch = useDispatch();
   const toggleSidebar = useSelector((state) => state.sidebarToggle.classes);
   const [sidebarToggle, setSidebarToggle] = useState();
@@ -27,7 +26,6 @@ export default function Header({ data }) {
     setSidebarToggle(toggleSidebar);
   }, [toggleSidebar]);
 
-  console.log(data.user.firstName);
   const handleClick = () => {
     if (sidebarToggle === "") {
       dispatch(showSidebar("open"));

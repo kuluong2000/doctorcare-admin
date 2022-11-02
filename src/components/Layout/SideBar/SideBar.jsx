@@ -12,6 +12,11 @@ export default function SideBar() {
   const sideBarMenu = [
     {
       icon: <FontAwesomeIcon icon={faHouseChimney}></FontAwesomeIcon>,
+      title: "Quản lý tài khoản",
+      to: "quan-ly-tai-khoan",
+    },
+    {
+      icon: <FontAwesomeIcon icon={faHouseChimney}></FontAwesomeIcon>,
       title: "Quản lý bác sĩ",
       to: "quan-ly-bac-si",
     },
@@ -48,8 +53,6 @@ export default function SideBar() {
   const handleClick = (e) => {
     const parentNode = e.target.parentElement.parentNode;
     const parentElement = e.target.parentElement;
-    console.log(parentNode);
-    console.log(parentElement);
     parentElement.classList.toggle(cx("open"));
     for (let item of parentNode.children) {
       if (item.className.includes(cx("open"))) {

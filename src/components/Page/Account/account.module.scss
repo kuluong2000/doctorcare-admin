@@ -4,6 +4,7 @@
   overflow: hidden;
   max-width: 100vw;
 }
+
 .table table {
   width: auto;
 }
@@ -31,9 +32,4 @@
       border-radius: 5px;
     }
   }
-}
-.image img {
-  width: 100px !important;
-  height: 100px !important;
-  object-fit: cover;
 }

@@ -1,30 +1,32 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "antd/dist/antd.css";
 import { Space, Table } from "antd";
-import Swal from "sweetalert2";
 import classNames from "classnames/bind";
 import styles from "./department.module.scss";
 import Button from "../../common/Button/Button";
 import Modals from "../../Layout/Popper/Modal";
 
-import { openModal, hideModal, getALLDepartment, insertDepartment, updateDepartment, deleteDepartment } from "../../../redux/action";
+import { openModal, hideModal, insertDepartment, getALLDepartment } from "../../../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { modal } from "../../../redux/reducer/modal";
-import axios from "axios";
-
-//URL
-import BASE_URL from "./../../../utils/configURL";
 
 const cx = classNames.bind(styles);
 export default function Department() {
   const dispatch = useDispatch();
-
-  const [formData, setFormData] = useState({ nameDepartment: "", description: "", price: "", image: "", date: "" });
+  // const [dataTable, setDataTable] = useState("");
+  const [formData, setFormData] = useState("");
 
   const { data, loading } = useSelector((state) => state.admin);
   const mode = useSelector((state) => state.modal.data.mode);
+  const dataRow = useSelector((state) => state.modal.data.data);
+
+  console.log(mode);
+
   useEffect(() => {
+    // if (!dataSource && !dataTable) {
     dispatch(getALLDepartment());
+    // setDataTable(dataSource);
+    // }
   }, []);
 
   const handleOnChage = (e) => {
@@ -32,7 +34,6 @@ export default function Department() {
   };
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
-    setFormData(record);
   };
   const handleOk = () => {
     if (mode === "Add") {
@@ -40,35 +41,15 @@ export default function Department() {
       return Promise.all([dispatch(hideModal()), dispatch(insertDepartment(formData))]);
     }
     if (mode === "Edit") {
-      return Promise.all([dispatch(hideModal()), dispatch(updateDepartment(formData._id, formData))]);
+      // setDataTable(dataRow);
+      console.log(dataRow);
     }
   };
 
-  //upload image
-  const hadnleOnChangeImage = async (e) => {
-    const formDataImage = new FormData();
-    const file = e.target.files[0];
-    formDataImage.append("image", file);
-    await axios.post(`${BASE_URL}/upload`, formDataImage).then((res) => setFormData({ ...formData, [e.target.name]: res.data.data }));
-  };
   const onCancel = () => {
     return dispatch(hideModal());
   };
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Bạn có muốn xóa?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Xóa",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(deleteDepartment(id));
-        Swal.fire("Deleted!", "Xóa thành công.", "success");
-      }
-    });
-  };
+  const handleDelete = () => {};
   const columns = [
     {
       title: "STT",
@@ -96,9 +77,7 @@ export default function Department() {
       title: "Image",
       dataIndex: "image",
       key: "image",
-      width: 200,
-      className: `${cx("image")}`,
-      render: (t, r) => <img src={r.image ? `http://127.0.0.1:3030/${r.image}` : ""} alt="" />,
+      render: (t, r) => <img src={`${r.image}`} alt="" />,
     },
     {
       title: "Action",
@@ -110,7 +89,7 @@ export default function Department() {
           <Button className={`btn-primary bg-primary`} onClick={() => showModal("Edit", record)}>
             sửa
           </Button>
-          <Button className={`btn-danger bg-danger`} onClick={() => handleDelete(record._id)}>
+          <Button className={`btn-danger bg-danger`} onClick={() => handleDelete(record.id)}>
             Xóa
           </Button>
         </Space>
@@ -141,7 +120,7 @@ export default function Department() {
             </div>
             <div className={cx("form-item")}>
               <label htmlFor="">Hình ảnh</label>
-              <input onChange={hadnleOnChangeImage} type="file" value="" name="image" accept=".jpg, .jpeg, .png" />
+              <input onChange={handleOnChage} type="file" value={formData?.image || ""} name="image" />
             </div>
             <div className={cx("form-item")}>
               <label htmlFor="">Ngày tạo</label>
@@ -154,9 +133,8 @@ export default function Department() {
         <Table
           rowKey={(record) => record._id}
           columns={columns}
-          loading={loading}
-          dataSource={data}
-          pagination={{ defaultPageSize: 5 }}
+          dataSource={dataSource}
+          pagination={{ defaultPageSize: 10 }}
           scroll={{
             x: 1300,
           }}

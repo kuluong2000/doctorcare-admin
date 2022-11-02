@@ -3,6 +3,7 @@ const DefaultLayout = React.lazy(() => import("../components/Layout/defaultLayou
 const Login = React.lazy(() => import("../components/Layout/Authen/Login"));
 const Register = React.lazy(() => import("../components/Layout/Authen/Register"));
 const Home = React.lazy(() => import("../components/Page/Home/Home"));
+const Account = React.lazy(() => import("../components/Page/Account/Account"));
 const Doctor = React.lazy(() => import("../components/Page/Doctor/Doctor"));
 const Medicine = React.lazy(() => import("../components/Page/Medicine/Medicine"));
 const Department = React.lazy(() => import("../components/Page/Department/Department"));
@@ -24,6 +25,11 @@ const routerPublic = [
   {
     path: "/home",
     component: Home,
+    layout: null,
+  },
+  {
+    path: "/quan-tri/quan-ly-tai-khoan",
+    component: Account,
     layout: null,
   },
   {
