@@ -1,6 +1,6 @@
-import axios from "axios";
-import BASE_URL from "./../utils/configURL";
-import * as actionType from "./actionType";
+import axios from 'axios';
+import BASE_URL from './../utils/configURL';
+import * as actionType from './actionType';
 // toggle sibar
 
 export const showSidebar = (data) => {
@@ -119,5 +119,163 @@ export const deleteDepartment = (id) => {
         }
       })
       .catch((err) => dispatch(getAllDepartmentFail(err)));
+  };
+};
+
+//Diseases
+
+export const getALLDiseasesStart = () => {
+  return {
+    type: actionType.GET_ALL_DISEASES_FAIL,
+  };
+};
+export const getAllDiseasesSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_DISEASES_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllDiseasesFail = () => {
+  return {
+    type: actionType.GET_ALL_DISEASES_FAIL,
+  };
+};
+export const getAllDiseases = () => {
+  return (dispatch) => {
+    dispatch(getALLDiseasesStart());
+    axios
+      .get(`${BASE_URL}/admin/diseases`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllDiseasesSuccess(res.data.data));
+        } else {
+          return dispatch(getAllDiseasesFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDiseasesFail()));
+  };
+};
+export const insertDiseases = (data) => {
+  return (dispatch) => {
+    dispatch(getALLDiseasesStart());
+    axios
+      .post(`${BASE_URL}/admin/diseases`, data)
+      .then((res) => {
+        if (res.status === 201) {
+          return dispatch(getAllDiseases());
+        } else {
+          return dispatch(getAllDiseasesFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDiseasesFail()));
+  };
+};
+export const updateDiseases = (id, data) => {
+  return (dispatch) => {
+    dispatch(getALLDiseasesStart());
+    axios
+      .patch(`${BASE_URL}/admin/diseases/${id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllDiseases());
+        } else {
+          return dispatch(getAllDiseasesFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDiseasesFail()));
+  };
+};
+export const deleteDisease = (id) => {
+  return (dispatch) => {
+    dispatch(getALLDiseasesStart());
+    axios
+      .delete(`${BASE_URL}/admin/diseases/${id}`)
+      .then((res) => {
+        if (res.status === 204) {
+          dispatch(getAllDiseases());
+        } else {
+          dispatch(getAllDiseasesFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDiseasesFail()));
+  };
+};
+
+//Position
+
+export const getALLPositionStart = () => {
+  return {
+    type: actionType.GET_ALL_POSITION_FAIL,
+  };
+};
+export const getAllPositionSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_POSITION_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllPositionFail = () => {
+  return {
+    type: actionType.GET_ALL_POSITION_FAIL,
+  };
+};
+export const getAllPosition = () => {
+  return (dispatch) => {
+    dispatch(getALLPositionStart());
+    axios
+      .get(`${BASE_URL}/admin/position`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllPositionSuccess(res.data.data));
+        } else {
+          return dispatch(getAllPositionFail());
+        }
+      })
+      .catch((err) => dispatch(getAllPositionFail()));
+  };
+};
+export const insertPosition = (data) => {
+  return (dispatch) => {
+    dispatch(getALLPositionStart());
+    axios
+      .post(`${BASE_URL}/admin/position`, data)
+      .then((res) => {
+        if (res.status === 201) {
+          return dispatch(getAllPosition());
+        } else {
+          return dispatch(getAllPositionFail());
+        }
+      })
+      .catch((err) => dispatch(getAllPositionFail()));
+  };
+};
+export const updatePosition = (id, data) => {
+  return (dispatch) => {
+    dispatch(getALLPositionStart());
+    axios
+      .patch(`${BASE_URL}/admin/position/${id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllPosition());
+        } else {
+          return dispatch(getAllPositionFail());
+        }
+      })
+      .catch((err) => dispatch(getAllPositionFail()));
+  };
+};
+export const deletePosition = (id) => {
+  return (dispatch) => {
+    dispatch(getALLPositionStart());
+    axios
+      .delete(`${BASE_URL}/admin/position/${id}`)
+      .then((res) => {
+        if (res.status === 204) {
+          dispatch(getAllPosition());
+        } else {
+          dispatch(getAllPositionFail());
+        }
+      })
+      .catch((err) => dispatch(getAllPositionFail()));
   };
 };
