@@ -38,6 +38,57 @@ export const dataUser = (data) => {
   };
 };
 
+//doctor
+
+export const getAllDoctorStart = () => {
+  return {
+    type: actionType.GET_ALL_DOCTOR_START,
+  };
+};
+export const getAllDoctorSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_DOCTOR_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllDoctorFail = () => {
+  return {
+    type: actionType.GET_ALL_DOCTOR_FAIL,
+  };
+};
+
+export const getAllDoctor = () => {
+  return (dispatch) => {
+    dispatch(getAllDoctorStart());
+    axios
+      .get(`${BASE_URL}/admin/doctor`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllDoctorSuccess(res.data.data));
+        } else {
+          return dispatch(getAllDoctorFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDoctorFail()));
+  };
+};
+export const createDoctor = (data) => {
+  return (dispatch) => {
+    dispatch(getAllDoctorStart());
+    axios
+      .post(`${BASE_URL}/admin/doctor`, data)
+      .then((res) => {
+        if (res.status === 201) {
+          console.log(res.data);
+          return dispatch(getAllDoctor());
+        } else {
+          return dispatch(getAllDoctorFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDoctorFail()));
+  };
+};
+
 //department
 export const getAllDepartmentStart = () => {
   return {
@@ -80,9 +131,7 @@ export const insertDepartment = (data) => {
       .post(`${BASE_URL}/admin/department`, data)
       .then((res) => {
         if (res.status === 201) {
-          console.log(res.data);
           return dispatch(getALLDepartment());
-          // console.log(res.data.data);
         } else {
           return dispatch(getAllDepartmentFail(res));
         }

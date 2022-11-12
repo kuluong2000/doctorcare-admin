@@ -41,3 +41,40 @@
     width: 70px;
   }
 }
+.form-photo-upload {
+  display: flex;
+
+  align-items: center;
+  font-size: 14px;
+}
+.form-user-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  margin-right: 20px;
+}
+.form-upload {
+  width: 0.1px !important;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.form--upload:focus + label {
+  outline: 3px solid var(--color-dark-blue);
+  outline-offset: 3px;
+}
+
+.form-upload + label {
+  color: var(--color-dark-blue);
+  display: inline-block;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-dark-blue);
+  padding: 3px;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-weight: 600;
+}

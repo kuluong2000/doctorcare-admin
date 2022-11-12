@@ -2,6 +2,7 @@ import * as actionType from './../actionType';
 const initialState = [
   {
     loading: false,
+    dataDoctor: [],
     dataDepartment: [],
     dataDiseases: [],
     dataPosition: [],
@@ -9,6 +10,22 @@ const initialState = [
 ];
 export function adminReducer(state = initialState, action) {
   switch (action.type) {
+    case actionType.GET_ALL_DOCTOR_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actionType.GET_ALL_DOCTOR_SUCCESS:
+      return {
+        ...state,
+        dataDoctor: action.payload,
+        loading: false,
+      };
+    case actionType.GET_ALL_DOCTOR_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
     case actionType.GET_ALL_DEPARTMENT_START:
       return {
         ...state,
