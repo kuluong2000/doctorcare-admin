@@ -1,4 +1,4 @@
-import * as actionType from "../actionType";
+import * as actionType from '../actionType';
 const initialState = {
   data: [],
   modal: { show: false },

@@ -88,7 +88,37 @@ export const createDoctor = (data) => {
       .catch((err) => dispatch(getAllDoctorFail()));
   };
 };
+export const updateDoctor = (id, data) => {
+  return (dispatch) => {
+    dispatch(getAllDoctorStart());
+    axios
+      .patch(`${BASE_URL}/admin/doctor/${id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllDoctor());
+        } else {
+          return dispatch(getAllDoctorFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDoctorFail()));
+  };
+};
 
+export const lockAccountDoctor = (id) => {
+  return (dispatch) => {
+    dispatch(getAllDoctorStart());
+    axios
+      .patch(`${BASE_URL}/admin/doctor/locked/${id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllDoctor());
+        } else {
+          return dispatch(getAllDoctorFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDoctorFail()));
+  };
+};
 //department
 export const getAllDepartmentStart = () => {
   return {

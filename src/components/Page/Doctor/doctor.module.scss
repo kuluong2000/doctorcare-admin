@@ -78,3 +78,10 @@
   cursor: pointer;
   font-weight: 600;
 }
+.image {
+  width: 100px;
+  height: 100px;
+  img {
+    width: 100%;
+  }
+}

@@ -11,6 +11,8 @@ import {
   hideModal,
   getAllDoctor,
   createDoctor,
+  updateDoctor,
+  lockAccountDoctor,
   getALLDepartment,
   getAllPosition,
 } from '../../../redux/action';
@@ -41,23 +43,15 @@ export default function Doctor() {
     (state) => state.admin
   );
   const mode = useSelector((state) => state.modal.data.mode);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //  const getAPI = () => {
-    //    Promise.all([dispatch(getAllDiseases()), dispatch(getALLDepartment())]);
-    //  };
-    //  getAPI();
-    if (!dataDoctor?.[0] || !dataDepartment?.[0] || !dataPosition?.[0]) {
-      // dispatch(getAllDoctor());
-      Promise.all([
-        dispatch(getAllDoctor()),
-        dispatch(getALLDepartment()),
-        dispatch(getAllPosition()),
-      ]);
-    }
-  }, [dataDepartment, dataDoctor, dataPosition, dispatch]);
+    Promise.all([
+      dispatch(getAllDoctor()),
+      dispatch(getALLDepartment()),
+      dispatch(getAllPosition()),
+    ]);
+  }, []);
 
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,8 +61,21 @@ export default function Doctor() {
   };
 
   const showModal = (mode, record) => {
-    console.log(record);
-    setFormData(record);
+    setFormData({
+      id: record?._id,
+      firstName: record?.account?.people?.firstName,
+      lastName: record?.account?.people?.lastName,
+      email: record?.account?.people?.email,
+      phone: record?.account?.people?.phone,
+      address: record?.account?.people?.address,
+      birthday: record?.account?.people?.birthday,
+      gender: record?.account?.people?.gender,
+      image: record?.account?.people?.image,
+      username: record?.account?.username,
+      password: record?.account?.password,
+      department: record?.department?._id,
+      position: record?.position?._id,
+    });
     dispatch(openModal(mode, record));
   };
   const handleOk = async () => {
@@ -89,8 +96,41 @@ export default function Doctor() {
           return alert('tạo khong thành công');
         }
       }
+
+      return Promise.all([
+        dispatch(createDoctor(formData)),
+        dispatch(hideModal()),
+      ]);
     }
-    console.log(1);
+    if (mode === 'Edit') {
+      console.log(formData.id);
+      if (file) {
+        const formDataFile = new FormData();
+        formDataFile.append('image', file);
+        try {
+          const fileImage = await axios.post(
+            `${BASE_URL}/upload`,
+            formDataFile
+          );
+          return Promise.all([
+            dispatch(
+              updateDoctor(formData.id, {
+                ...formData,
+                image: fileImage.data.data,
+              })
+            ),
+            dispatch(hideModal()),
+          ]);
+        } catch (error) {
+          return alert('tạo khong thành công');
+        }
+      }
+
+      return Promise.all([
+        dispatch(updateDoctor(formData.id, formData)),
+        dispatch(hideModal()),
+      ]);
+    }
     // dispatch(UpdateMe(id, formData));
 
     // dispatch(
@@ -102,7 +142,9 @@ export default function Doctor() {
   const onCancel = () => {
     dispatch(hideModal());
   };
-  const handleDelete = () => {};
+  const handleLockAccountDoctor = (id) => {
+    dispatch(lockAccountDoctor(id));
+  };
   const columns = [
     {
       title: 'Họ',
@@ -193,7 +235,17 @@ export default function Doctor() {
       width: 150,
       dataIndex: 'image',
       key: 'image',
-      render: (t, r) => <img src={`${r.image}`} alt="" />,
+      className: `${cx('image')}`,
+      render: (t, r) => (
+        <Image
+          src={
+            r?.account?.people?.image
+              ? `http://127.0.0.1:3030/${r?.account?.people?.image}`
+              : ''
+          }
+          alt=""
+        />
+      ),
     },
     {
       title: 'Status',
@@ -216,7 +268,7 @@ export default function Doctor() {
           </Button>
           <Button
             className={`btn-danger bg-danger`}
-            onClick={() => handleDelete(record.id)}
+            onClick={() => handleLockAccountDoctor(record._id)}
           >
             Khóa
           </Button>
@@ -224,7 +276,6 @@ export default function Doctor() {
       ),
     },
   ];
-  console.log(formData);
   return (
     <>
       <div className={cx('btn-create')}>
@@ -240,11 +291,7 @@ export default function Doctor() {
                 placeholder="vui lòng nhập vào Họ"
                 name="lastName"
                 onChange={handleOnChange}
-                value={
-                  formData?.account
-                    ? (formData.lastName = formData.account.people?.lastName)
-                    : formData?.lastName || ''
-                }
+                value={formData?.lastName || ''}
               />
             </div>
             <div className={cx('form-item')}>
@@ -391,7 +438,7 @@ export default function Doctor() {
           rowKey={(record) => record._id}
           loading={loading}
           columns={columns}
-          pagination={5}
+          pagination={{ defaultPageSize: 5 }}
           dataSource={dataDoctor}
           scroll={{
             x: 1300,
