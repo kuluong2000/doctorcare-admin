@@ -6,10 +6,28 @@ const initialState = [
     dataDepartment: [],
     dataDiseases: [],
     dataPosition: [],
+    booking: [],
   },
 ];
 export function adminReducer(state = initialState, action) {
   switch (action.type) {
+    case actionType.GET_ALL_BOOKING_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actionType.GET_ALL_BOOKING_SUCCESS:
+      return {
+        ...state,
+        booking: action.payload,
+        loading: false,
+      };
+    case actionType.GET_ALL_BOOKING_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
+
     case actionType.GET_ALL_DOCTOR_START:
       return {
         ...state,

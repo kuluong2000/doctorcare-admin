@@ -38,8 +38,58 @@ export const dataUser = (data) => {
   };
 };
 
-//doctor
+//booking
+export const getAllBookingStart = () => {
+  return {
+    type: actionType.GET_ALL_BOOKING_START,
+  };
+};
+export const getAllBookingSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_BOOKING_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllBookingFail = () => {
+  return {
+    type: actionType.GET_ALL_BOOKING_FAIL,
+  };
+};
 
+export const getAllBookingByDoctor = (id) => {
+  return (dispatch) => {
+    dispatch(getAllBookingStart());
+    console.log(id);
+    axios
+      .get(`${BASE_URL}/admin/booking/${id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllBookingSuccess(res.data.data));
+        } else {
+          return dispatch(getAllBookingFail());
+        }
+      })
+      .catch((err) => dispatch(getAllBookingFail()));
+  };
+};
+
+export const getAllBooking = () => {
+  return (dispatch) => {
+    dispatch(getAllBookingStart());
+    axios
+      .get(`${BASE_URL}/admin/booking`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllBookingSuccess(res.data.data));
+        } else {
+          return dispatch(getAllBookingFail());
+        }
+      })
+      .catch((err) => dispatch(getAllBookingFail()));
+  };
+};
+
+//doctor
 export const getAllDoctorStart = () => {
   return {
     type: actionType.GET_ALL_DOCTOR_START,

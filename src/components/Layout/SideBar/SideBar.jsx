@@ -15,8 +15,9 @@ export default function SideBar() {
   const toggleSidebar = useSelector((state) => state.sidebarToggle.classes);
   // const data_user = JSON.parse(localStorage.getItem('data-user')).data[0]
   //   .account.people;
-  const data_user = JSON.parse(localStorage.getItem('data-user')).data[0];
-
+  const data_user = JSON.parse(localStorage.getItem('data-user')).data
+    ?.account[0];
+  console.log(data_user);
   let sideBarMenu = [];
   if (data_user.role.nameRole === 'admin') {
     sideBarMenu = [
@@ -32,8 +33,8 @@ export default function SideBar() {
       },
       {
         icon: <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>,
-        title: 'Quản lý lịch khám',
-        to: 'quan-ly-lich-kham',
+        title: 'Danh sách bệnh nhân',
+        to: 'benh-nhan',
       },
       {
         icon: <FontAwesomeIcon icon={faDesktop}></FontAwesomeIcon>,

@@ -1,33 +1,31 @@
+import React, { useEffect, useState } from 'react';
 import { Space, Table } from 'antd';
 import classNames from 'classnames/bind';
-import React, { useEffect, useState } from 'react';
 import Button from '../../common/Button/Button';
-import {
-  openModal,
-  hideModal,
-  getAllBookingByDoctor,
-} from '../../../redux/action';
+import { openModal, hideModal, getAllBooking } from '../../../redux/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import Modals from '../../Layout/Popper/Modal';
 
-import styles from './schedule.module.scss';
+import styles from './patient.module.scss';
 const cx = classNames.bind(styles);
-
-export default function Schedule() {
+export default function Patient() {
   const dispatch = useDispatch();
   const mode = useSelector((state) => state.modal.data.mode);
   const { booking, loading } = useSelector((state) => state.admin);
   const [formData, setFormData] = useState({});
+
+  //################
+  useEffect(() => {
+    dispatch(getAllBooking());
+  }, []);
+
+  //#############
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const doctor = JSON.parse(localStorage.getItem('data-user')).data.doctor;
-
-  useEffect(() => {
-    dispatch(getAllBookingByDoctor(doctor));
-  }, []);
-
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
     setFormData(record);

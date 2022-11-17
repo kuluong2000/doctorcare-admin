@@ -22,9 +22,10 @@ export default function Login() {
     await axios
       .post(`${baseURL}/authen/login`, formData)
       .then((res) => {
+        console.log(res.data.data.account[0]);
         if (
-          res.data.data[0]?.role.nameRole === 'admin' ||
-          res.data.data[0]?.role.nameRole === 'doctor'
+          res.data.data?.account[0]?.role.nameRole === 'admin' ||
+          res.data.data?.account[0]?.role.nameRole === 'doctor'
         ) {
           localStorage.setItem('data-user', JSON.stringify(res.data));
           return navigate('/quan-tri');

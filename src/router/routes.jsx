@@ -24,6 +24,7 @@ const Position = React.lazy(() =>
 const Schedule = React.lazy(() =>
   import('../components/Page/Schedule/Schedule')
 );
+const Patient = React.lazy(() => import('../components/Page/Patient/Patient'));
 
 const ErrorPage = React.lazy(() => {
   return new Promise((resolve) => {
@@ -78,6 +79,11 @@ const routerPublic = [
   {
     path: '/quan-tri/quan-ly-lich-kham',
     component: Schedule,
+    layout: null,
+  },
+  {
+    path: '/quan-tri/benh-nhan',
+    component: Patient,
     layout: null,
   },
 

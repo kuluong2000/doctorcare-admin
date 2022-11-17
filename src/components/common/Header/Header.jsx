@@ -34,6 +34,7 @@ export default function Header({ data }) {
       dispatch(hideSidebar(''));
     }
   };
+
   return (
     <header className={cx('header')}>
       <div className={cx('nav-toggle')}>
@@ -88,8 +89,8 @@ export default function Header({ data }) {
                 <p className={cx('user-name')}>
                   {/* {`${data[0]?.account?.people?.firstName} ${data[0]?.account?.people?.lastName}` ||
                     ''} */}
-                  {`${data[0]?.people?.firstName || ''} ${
-                    data[0]?.people?.lastName || ''
+                  {`${data?.account[0].people?.firstName || ''} ${
+                    data?.account[0].people?.lastName || ''
                   }` || ''}
                 </p>
                 <button>
