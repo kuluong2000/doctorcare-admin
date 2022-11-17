@@ -38,6 +38,7 @@ export default function Doctor() {
     password: '',
     department: '',
     position: '',
+    description: '',
   });
   const { loading, dataDoctor, dataDepartment, dataPosition } = useSelector(
     (state) => state.admin
@@ -75,6 +76,7 @@ export default function Doctor() {
       password: record?.account?.password,
       department: record?.department?._id,
       position: record?.position?._id,
+      description: record?.description,
     });
     dispatch(openModal(mode, record));
   };
@@ -408,6 +410,18 @@ export default function Doctor() {
                   ))}
               </select>
             </div>
+
+            <div className={cx('form-item')}>
+              <label htmlFor="">Mô tả</label>
+              <input
+                type="text"
+                placeholder="vui lòng nhập vào mô tả"
+                name="description"
+                onChange={handleOnChange}
+                value={formData?.description || ''}
+              />
+            </div>
+
             <div className={cx('form-photo-upload')}>
               <Image
                 src={

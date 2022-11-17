@@ -1,21 +1,21 @@
 //import lib
-import React, { useEffect, useState } from "react";
-import classNames from "classnames/bind";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import Tippy from "@tippyjs/react/headless";
-import { hideSidebar, showSidebar } from "../../../redux/action";
+import React, { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import Tippy from '@tippyjs/react/headless';
+import { hideSidebar, showSidebar } from '../../../redux/action';
 //import comp
 
-import { Wrapper } from "../../Layout/Popper";
-import Notification from "../../Layout/Popper/Menu/Notification/Notification";
-import Menu from "../../Layout/Popper/Menu/Menu/Menu";
+import { Wrapper } from '../../Layout/Popper';
+import Notification from '../../Layout/Popper/Menu/Notification/Notification';
+import Menu from '../../Layout/Popper/Menu/Menu/Menu';
 
 //import css
 
-import styles from "./header.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import styles from './header.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 export default function Header({ data }) {
@@ -27,23 +27,23 @@ export default function Header({ data }) {
   }, [toggleSidebar]);
 
   const handleClick = () => {
-    if (sidebarToggle === "") {
-      dispatch(showSidebar("open"));
+    if (sidebarToggle === '') {
+      dispatch(showSidebar('open'));
     }
-    if (sidebarToggle === "open") {
-      dispatch(hideSidebar(""));
+    if (sidebarToggle === 'open') {
+      dispatch(hideSidebar(''));
     }
   };
   return (
-    <header className={cx("header")}>
-      <div className={cx("nav-toggle")}>
-        <button className={cx("menu-toggle")} onClick={handleClick}>
+    <header className={cx('header')}>
+      <div className={cx('nav-toggle')}>
+        <button className={cx('menu-toggle')} onClick={handleClick}>
           <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
         </button>
       </div>
-      <nav className={cx("navbar")}>
-        <ul className={cx("navbar-list")}>
-          <li className={cx("navbar-item", "navbar-envelope")}>
+      <nav className={cx('navbar')}>
+        <ul className={cx('navbar-list')}>
+          <li className={cx('navbar-item', 'navbar-envelope')}>
             <Tippy
               trigger="click"
               placement="top"
@@ -58,12 +58,15 @@ export default function Header({ data }) {
               )}
             >
               <button>
-                <FontAwesomeIcon icon={faEnvelope} className={cx("icon-envelope")}></FontAwesomeIcon>
-                <span className={cx("navbar-badge")}>6</span>
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  className={cx('icon-envelope')}
+                ></FontAwesomeIcon>
+                <span className={cx('navbar-badge')}>6</span>
               </button>
             </Tippy>
           </li>
-          <li className={cx("navbar-item", " navbar-dropdrow")}>
+          <li className={cx('navbar-item', ' navbar-dropdrow')}>
             <Tippy
               trigger="click"
               offset={[0, -5]}
@@ -76,11 +79,24 @@ export default function Header({ data }) {
                 </div>
               )}
             >
-              <div className={cx("navbar-item", "navbar-dropdrow")}>
-                <img src={require("../../../assets/images/avatar.jpg")} alt="" className={cx("avatar")} />
-                <p className={cx("user-name")}>{`${data?.user.firstName} ${data?.user.lastName}` || "noname"}</p>
+              <div className={cx('navbar-item', 'navbar-dropdrow')}>
+                <img
+                  src={require('../../../assets/images/avatar.jpg')}
+                  alt=""
+                  className={cx('avatar')}
+                />
+                <p className={cx('user-name')}>
+                  {/* {`${data[0]?.account?.people?.firstName} ${data[0]?.account?.people?.lastName}` ||
+                    ''} */}
+                  {`${data[0]?.people?.firstName || ''} ${
+                    data[0]?.people?.lastName || ''
+                  }` || ''}
+                </p>
                 <button>
-                  <FontAwesomeIcon icon={faCaretDown} className={cx("icon-angle-down")}></FontAwesomeIcon>
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    className={cx('icon-angle-down')}
+                  ></FontAwesomeIcon>
                 </button>
               </div>
             </Tippy>
