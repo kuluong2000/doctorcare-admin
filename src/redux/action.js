@@ -56,15 +56,29 @@ export const getAllBookingFail = () => {
   };
 };
 
-export const getAllBookingByDoctor = (id) => {
+export const getAllBookingByDoctor = (id, date) => {
   return (dispatch) => {
     dispatch(getAllBookingStart());
-    console.log(id);
     axios
-      .get(`${BASE_URL}/admin/booking/${id}`)
+      .get(`${BASE_URL}/admin/booking/${id}?date=${date}`)
       .then((res) => {
         if (res.status === 200) {
           return dispatch(getAllBookingSuccess(res.data.data));
+        } else {
+          return dispatch(getAllBookingFail());
+        }
+      })
+      .catch((err) => dispatch(getAllBookingFail()));
+  };
+};
+export const verifyBookingByDoctor = (idBooking, data, idDoctor) => {
+  return (dispatch) => {
+    dispatch(getAllBookingStart());
+    axios
+      .patch(`${BASE_URL}/admin/booking/${idBooking}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllBookingByDoctor(idDoctor));
         } else {
           return dispatch(getAllBookingFail());
         }

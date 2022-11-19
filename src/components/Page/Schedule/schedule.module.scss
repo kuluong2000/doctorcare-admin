@@ -14,7 +14,8 @@
   gap: 15px;
   width: 100%;
   &-item {
-    width: calc(50% - 15px);
+    width: 100%;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     & > label {
@@ -31,4 +32,13 @@
       border-radius: 5px;
     }
   }
+}
+.form-info-patient {
+  width: 35%;
+}
+.form-info-doctor {
+  width: 30%;
+}
+.form-day-time {
+  width: 30%;
 }

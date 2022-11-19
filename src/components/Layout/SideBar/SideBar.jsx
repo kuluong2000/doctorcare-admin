@@ -17,7 +17,6 @@ export default function SideBar() {
   //   .account.people;
   const data_user = JSON.parse(localStorage.getItem('data-user')).data
     ?.account[0];
-  console.log(data_user);
   let sideBarMenu = [];
   if (data_user.role.nameRole === 'admin') {
     sideBarMenu = [

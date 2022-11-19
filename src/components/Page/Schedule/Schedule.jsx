@@ -1,48 +1,59 @@
-import { Space, Table } from 'antd';
+import { DatePicker, Select, Space, Table } from 'antd';
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import Button from '../../common/Button/Button';
+import moment from 'moment';
 import {
   openModal,
   hideModal,
   getAllBookingByDoctor,
+  verifyBookingByDoctor,
 } from '../../../redux/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import Modals from '../../Layout/Popper/Modal';
+
+import { formatPrice } from './../../../utils/numberFormat';
 
 import styles from './schedule.module.scss';
 const cx = classNames.bind(styles);
 
 export default function Schedule() {
   const dispatch = useDispatch();
+  //##########format DatePicker
+  const dateFormat = 'DD/MM/YYYY';
   const mode = useSelector((state) => state.modal.data.mode);
   const { booking, loading } = useSelector((state) => state.admin);
   const [formData, setFormData] = useState({});
+  const [data, setData] = useState();
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const doctor = JSON.parse(localStorage.getItem('data-user')).data.doctor;
+  useEffect(() => {
+    dispatch(getAllBookingByDoctor(doctor, moment().format('DD/MM/YYYY')));
+  }, []);
 
   useEffect(() => {
-    dispatch(getAllBookingByDoctor(doctor));
-  }, []);
+    const data = booking && booking.filter((item) => item.status === false);
+
+    setData(data);
+  }, [booking]);
 
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
     setFormData(record);
   };
   const handleOk = () => {
-    if (mode === 'Add') {
-      dispatch(hideModal());
-    }
-    if (mode === 'Edit') {
-      dispatch(hideModal());
-    }
+    Promise.all([
+      dispatch(verifyBookingByDoctor(formData?._id, formData, doctor)),
+      dispatch(hideModal()),
+    ]);
   };
   const onCancel = () => {
     dispatch(hideModal());
   };
+
   const columns = [
     {
       title: 'STT',
@@ -53,7 +64,7 @@ export default function Schedule() {
       render: (text, record, index) => index,
     },
     {
-      title: 'Họ Tên ',
+      title: 'Họ Tên Bệnh Nhân ',
       dataIndex: 'name',
       key: 'name',
       fixed: 'left',
@@ -80,6 +91,7 @@ export default function Schedule() {
       title: 'Giá tiền',
       dataIndex: 'price',
       key: 'price',
+      render: (idx, data) => formatPrice(data?.price),
     },
     {
       title: 'Action',
@@ -98,41 +110,156 @@ export default function Schedule() {
       ),
     },
   ];
-
   return (
     <>
-      <div className={cx('btn-create')}>
-        <Modals onCancel={onCancel} handleOk={handleOk}>
-          <form className={cx('form')}>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Tên chức vụ</label>
-              <input
-                type="text"
-                name="namePosition"
-                onChange={handleOnChange}
-                value={formData?.namePosition || ''}
-                placeholder="vui lòng nhập vào tên chức vụ"
-              />
+      <Modals
+        title="Thông tin bệnh nhân"
+        onCancel={onCancel}
+        handleOk={handleOk}
+      >
+        <form className={cx('form')}>
+          <div className="d-flex w-100">
+            <div className="col-md-4 me-3">
+              <div className={cx('form-item')}>
+                <label htmlFor="">Họ và tên</label>
+                <input
+                  type="text"
+                  value={
+                    `${formData?.patient?.account?.people?.lastName} ${formData?.patient?.account?.people?.firstName}` ||
+                    ''
+                  }
+                  disabled
+                />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Số điện thoại</label>
+                <input
+                  type="number"
+                  value={formData?.patient?.account?.people?.phone || ''}
+                  disabled
+                />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Email</label>
+                <input
+                  type="email"
+                  value={formData?.patient?.account?.people?.email || ''}
+                  disabled
+                />
+              </div>
             </div>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Mô tả</label>
-              <input
-                type="text"
-                name="description"
-                onChange={handleOnChange}
-                value={formData?.description || ''}
-                placeholder="vui lòng nhập vào Mô tả"
-              />
+            <div className="col-md-4 me-3">
+              <div className={cx('form-item')}>
+                <label htmlFor="">Họ tên bác sĩ</label>
+                <input
+                  type="text"
+                  value={
+                    `${formData?.doctor?.account?.people?.lastName} ${formData?.doctor?.account?.people?.firstName}` ||
+                    ''
+                  }
+                  disabled
+                />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Khoa khám</label>
+                <input
+                  type="text"
+                  value={formData?.department?.nameDepartment || ''}
+                  disabled
+                />
+              </div>
             </div>
-          </form>
-        </Modals>
+            <div className="col-md-3">
+              <div className={cx('form-item')}>
+                <label htmlFor="">Ngày Đặt</label>
+                <input type="text" value={formData?.date || ''} disabled />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Thời gian Khám</label>
+                <input type="text" value={formData?.time || ''} disabled />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Giá tiền</label>
+                <input
+                  type="text"
+                  value={formatPrice(formData?.price) || ''}
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div className="d-flex w-100">
+            <div className="col-md-6 me-5 ">
+              <textarea
+                name=""
+                id=""
+                className="w-100"
+                rows="5"
+                value={formData?.message || ''}
+                disabled
+              ></textarea>
+            </div>
+            <div className="col-md-4">
+              <div className={cx('form-item')}>
+                <label htmlFor="">Chuẩn đoán của bác sĩ</label>
+                <input
+                  type="text"
+                  placeholder="chuẩn đoán của bác sĩ"
+                  name="diseases"
+                  onChange={handleOnChange}
+                  value={formData?.diseases || ''}
+                />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Ghi chú đính kèm</label>
+                <input
+                  type="text"
+                  placeholder="Lời dặn của bác sĩ"
+                  name="note"
+                  onChange={handleOnChange}
+                  value={formData?.note || ''}
+                />
+              </div>
+              <div className={cx('form-item')}>
+                <label htmlFor="">Đơn thuốc</label>
+                <Select
+                  mode="multiple"
+                  placeholder="Nhập thuốc"
+                  onChange={(value) => {
+                    setFormData({ ...formData, medicine: value });
+                  }}
+                >
+                  <Select.Option value="thuoc 1"> thuốc 1</Select.Option>
+                  <Select.Option value="thuoc 2"> thuốc 2</Select.Option>
+                  <Select.Option value="thuoc 3"> thuốc 3</Select.Option>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </Modals>
+      <div className="d-flex align-items-center ms-3">
+        <p className="me-2 fw-bold">Chọn ngày</p>
+        <Space direction="vertical">
+          <DatePicker
+            format={dateFormat}
+            defaultValue={moment()}
+            onChange={(e, dateString) =>
+              dispatch(getAllBookingByDoctor(doctor, dateString))
+            }
+            // disabledDate={(current) => {
+            //   let customDate = moment().format('DD/MM/YYYY');
+            //   return current && current < moment(customDate, 'DD/MM/YYYY');
+            // }}
+          />
+        </Space>
       </div>
       <div className={cx('table')}>
         <Table
           rowKey={(record) => record._id}
           columns={columns}
           loading={loading}
-          dataSource={booking}
+          dataSource={data}
           scroll={{
             x: 1300,
           }}
