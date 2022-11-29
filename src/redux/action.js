@@ -38,6 +38,41 @@ export const dataUser = (data) => {
   };
 };
 
+//Account
+export const getAllAccountStart = () => {
+  return {
+    type: actionType.GET_ALL_ACCOUNT_START,
+  };
+};
+export const getAllAccountSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_ACCOUNT_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllAccountFail = () => {
+  return {
+    type: actionType.GET_ALL_ACCOUNT_FAIL,
+  };
+};
+
+export const getAllAccount = () => {
+  return (dispatch) => {
+    dispatch(getAllAccountStart);
+    axios
+      .get(`${BASE_URL}/admin/account`)
+      .then((res) => {
+        if (res.status === 200) {
+          localStorage.setItem('Account', JSON.stringify(res.data.data));
+          return dispatch(getAllAccountSuccess(res.data.data));
+        } else {
+          return dispatch(getAllAccountFail());
+        }
+      })
+      .catch((err) => dispatch(getAllAccountFail()));
+  };
+};
+
 //booking
 export const getAllBookingStart = () => {
   return {
@@ -78,7 +113,8 @@ export const verifyBookingByDoctor = (idBooking, data, idDoctor) => {
       .patch(`${BASE_URL}/admin/booking/${idBooking}`, data)
       .then((res) => {
         if (res.status === 200) {
-          return dispatch(getAllBookingByDoctor(idDoctor));
+          console.log(data);
+          return dispatch(getAllBookingByDoctor(idDoctor, data.date));
         } else {
           return dispatch(getAllBookingFail());
         }
@@ -420,5 +456,116 @@ export const deletePosition = (id) => {
         }
       })
       .catch((err) => dispatch(getAllPositionFail()));
+  };
+};
+
+//Medicine
+
+export const getAllMedicineStart = () => {
+  return {
+    type: actionType.GET_ALL_MEDICINE_START,
+  };
+};
+export const getAllMedicineSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_MEDICINE_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllMedicineFail = () => {
+  return { type: actionType.GET_ALL_MEDICINE_FAIL };
+};
+
+export const getAllMedicine = () => {
+  return (dispatch) => {
+    dispatch(getAllMedicineStart());
+    axios
+      .get(`${BASE_URL}/admin/medicine`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllMedicineSuccess(res.data.data));
+        } else {
+          return dispatch(getAllMedicineFail());
+        }
+      })
+      .catch((err) => dispatch(getAllMedicineFail()));
+  };
+};
+export const createMedicine = (data) => {
+  return (dispatch) => {
+    dispatch(getAllMedicineStart());
+    axios
+      .post(`${BASE_URL}/admin/medicine`, data)
+      .then((res) => {
+        if (res.status === 201) {
+          return dispatch(getAllMedicine());
+        } else {
+          return dispatch(getAllMedicineFail());
+        }
+      })
+      .catch((err) => dispatch(getAllMedicineFail()));
+  };
+};
+export const updateMedicine = (id, data) => {
+  return (dispatch) => {
+    dispatch(getAllMedicineStart());
+    axios
+      .patch(`${BASE_URL}/admin/medicine/${id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllMedicine());
+        } else {
+          return dispatch(getAllMedicineFail());
+        }
+      })
+      .catch((err) => dispatch(getAllMedicineFail()));
+  };
+};
+export const deleteMedicine = (id) => {
+  return (dispatch) => {
+    dispatch(getAllMedicineStart());
+    axios
+      .delete(`${BASE_URL}/admin/medicine/${id}`)
+      .then((res) => {
+        if (res.status === 204) {
+          return dispatch(getAllMedicine());
+        } else {
+          return dispatch(getAllMedicineFail());
+        }
+      })
+      .catch((err) => dispatch(getAllMedicineFail()));
+  };
+};
+
+export const getAllStatisticStart = () => {
+  return {
+    type: actionType.GET_ALL_STATISTIC_START,
+  };
+};
+
+export const getAllStatisticSuccess = (data) => {
+  return {
+    type: actionType.GET_ALL_STATISTIC_SUCCESS,
+    payload: data,
+  };
+};
+export const getAllStatisticFail = () => {
+  return {
+    type: actionType.GET_ALL_STATISTIC_FAIL,
+  };
+};
+export const getAllStatisticByMonthOfYear = (month, year) => {
+  return (dispatch) => {
+    dispatch(getAllStatisticStart());
+    axios
+      .get(`${BASE_URL}/admin/statistic?month=${month}&year=${year}`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllStatisticSuccess(res.data));
+        } else {
+          return dispatch(getAllStatisticFail());
+        }
+      })
+      .catch((err) => dispatch(getAllStatisticFail()));
   };
 };

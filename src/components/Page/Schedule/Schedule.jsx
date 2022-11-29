@@ -8,6 +8,7 @@ import {
   hideModal,
   getAllBookingByDoctor,
   verifyBookingByDoctor,
+  getAllMedicine,
 } from '../../../redux/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -23,7 +24,7 @@ export default function Schedule() {
   //##########format DatePicker
   const dateFormat = 'DD/MM/YYYY';
   const mode = useSelector((state) => state.modal.data.mode);
-  const { booking, loading } = useSelector((state) => state.admin);
+  const { booking, medicine, loading } = useSelector((state) => state.admin);
   const [formData, setFormData] = useState({});
   const [data, setData] = useState();
   const handleOnChange = (e) => {
@@ -31,7 +32,10 @@ export default function Schedule() {
   };
   const doctor = JSON.parse(localStorage.getItem('data-user')).data.doctor;
   useEffect(() => {
-    dispatch(getAllBookingByDoctor(doctor, moment().format('DD/MM/YYYY')));
+    Promise.all([
+      dispatch(getAllMedicine()),
+      dispatch(getAllBookingByDoctor(doctor, new Date().toISOString())),
+    ]);
   }, []);
 
   useEffect(() => {
@@ -53,7 +57,6 @@ export default function Schedule() {
   const onCancel = () => {
     dispatch(hideModal());
   };
-
   const columns = [
     {
       title: 'STT',
@@ -86,6 +89,8 @@ export default function Schedule() {
       title: 'Giờ Khám',
       dataIndex: 'time',
       key: 'time',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => a.time.localeCompare(b.time),
     },
     {
       title: 'Giá tiền',
@@ -229,9 +234,12 @@ export default function Schedule() {
                     setFormData({ ...formData, medicine: value });
                   }}
                 >
-                  <Select.Option value="thuoc 1"> thuốc 1</Select.Option>
-                  <Select.Option value="thuoc 2"> thuốc 2</Select.Option>
-                  <Select.Option value="thuoc 3"> thuốc 3</Select.Option>
+                  {medicine &&
+                    medicine.map((item, idx) => (
+                      <Select.Option key={idx} value={item.nameMedicine}>
+                        {item.nameMedicine}
+                      </Select.Option>
+                    ))}
                 </Select>
               </div>
             </div>
@@ -242,15 +250,20 @@ export default function Schedule() {
         <p className="me-2 fw-bold">Chọn ngày</p>
         <Space direction="vertical">
           <DatePicker
-            format={dateFormat}
             defaultValue={moment()}
             onChange={(e, dateString) =>
-              dispatch(getAllBookingByDoctor(doctor, dateString))
+              // console.log(e, 'debug', new Date(dateString).toISOString())
+              dispatch(
+                getAllBookingByDoctor(
+                  doctor,
+                  new Date(dateString).toISOString()
+                )
+              )
             }
-            // disabledDate={(current) => {
-            //   let customDate = moment().format('DD/MM/YYYY');
-            //   return current && current < moment(customDate, 'DD/MM/YYYY');
-            // }}
+            disabledDate={(current) => {
+              let customDate = moment().format('DD-MM-YYYY');
+              return current && current < moment(customDate, 'DD-MM-YYYY');
+            }}
           />
         </Space>
       </div>

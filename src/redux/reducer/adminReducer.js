@@ -7,6 +7,8 @@ const initialState = [
     dataDiseases: [],
     dataPosition: [],
     booking: [],
+    medicine: [],
+    statistic: [],
   },
 ];
 export function adminReducer(state = initialState, action) {
@@ -100,7 +102,51 @@ export function adminReducer(state = initialState, action) {
         loading: false,
       };
     }
+    //Medicine
 
+    case actionType.GET_ALL_MEDICINE_START: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case actionType.GET_ALL_MEDICINE_SUCCESS: {
+      return {
+        ...state,
+        medicine: action.payload,
+        loading: false,
+      };
+    }
+    case actionType.GET_ALL_MEDICINE_FAIL: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+
+    // Statistic
+
+    //Medicine
+
+    case actionType.GET_ALL_STATISTIC_START: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case actionType.GET_ALL_STATISTIC_SUCCESS: {
+      return {
+        ...state,
+        statistic: action.payload,
+        loading: false,
+      };
+    }
+    case actionType.GET_ALL_STATISTIC_FAIL: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     default:
       return state;
   }

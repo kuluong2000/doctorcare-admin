@@ -25,6 +25,9 @@ const Schedule = React.lazy(() =>
   import('../components/Page/Schedule/Schedule')
 );
 const Patient = React.lazy(() => import('../components/Page/Patient/Patient'));
+const Statistic = React.lazy(() =>
+  import('../components/Page/Statistic/Statistic')
+);
 
 const ErrorPage = React.lazy(() => {
   return new Promise((resolve) => {
@@ -84,6 +87,11 @@ const routerPublic = [
   {
     path: '/quan-tri/benh-nhan',
     component: Patient,
+    layout: null,
+  },
+  {
+    path: '/quan-tri/thong-ke',
+    component: Statistic,
     layout: null,
   },
 

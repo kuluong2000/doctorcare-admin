@@ -59,6 +59,11 @@ export default function SideBar() {
         title: 'Quản lý Chức vụ',
         to: 'quan-ly-chuc-vu',
       },
+      {
+        icon: <FontAwesomeIcon icon={faDesktop}></FontAwesomeIcon>,
+        title: 'Thống kê',
+        to: 'thong-ke',
+      },
     ];
   }
   if (data_user.role.nameRole === 'doctor') {
