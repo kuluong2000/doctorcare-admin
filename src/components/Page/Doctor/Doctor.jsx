@@ -12,7 +12,7 @@ import {
   getAllDoctor,
   createDoctor,
   updateDoctor,
-  lockAccountDoctor,
+  lockOrUnlockAccountDoctor,
   getALLDepartment,
   getAllPosition,
 } from '../../../redux/action';
@@ -145,7 +145,10 @@ export default function Doctor() {
     dispatch(hideModal());
   };
   const handleLockAccountDoctor = (id) => {
-    dispatch(lockAccountDoctor(id));
+    dispatch(lockOrUnlockAccountDoctor(id, { status: false }));
+  };
+  const handleUnLockAccountDoctor = (id) => {
+    dispatch(lockOrUnlockAccountDoctor(id, { status: true }));
   };
   const columns = [
     {
@@ -254,10 +257,12 @@ export default function Doctor() {
       width: 100,
       dataIndex: 'status',
       key: 'status',
+      render: (index, data) =>
+        data?.status === true ? 'Đang hoạt động' : 'Đã khóa',
     },
     {
       title: 'Action',
-      width: 200,
+      width: 250,
       key: 'action',
       fixed: 'right',
       render: (text, record, index) => (
@@ -268,12 +273,21 @@ export default function Doctor() {
           >
             sửa
           </Button>
-          <Button
-            className={`btn-danger bg-danger`}
-            onClick={() => handleLockAccountDoctor(record._id)}
-          >
-            Khóa
-          </Button>
+          {record?.status === true ? (
+            <Button
+              className={`btn-danger bg-danger`}
+              onClick={() => handleLockAccountDoctor(record._id)}
+            >
+              khóa
+            </Button>
+          ) : (
+            <Button
+              className={`btn-danger bg-danger`}
+              onClick={() => handleUnLockAccountDoctor(record._id)}
+            >
+              Mở khóa
+            </Button>
+          )}
         </Space>
       ),
     },

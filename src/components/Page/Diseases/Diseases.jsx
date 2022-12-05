@@ -156,7 +156,7 @@ export default function Diseases() {
                 onChange={handleOnChange}
                 name="nameDiseases"
                 value={formData?.nameDiseases || ''}
-                placeholder="vui lòng nhập vào tên khoa"
+                placeholder="vui lòng nhập vào tên bệnh"
               />
             </div>
             <div className={cx('form-item')}>

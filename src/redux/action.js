@@ -72,6 +72,36 @@ export const getAllAccount = () => {
       .catch((err) => dispatch(getAllAccountFail()));
   };
 };
+export const updateAccount = (id, data) => {
+  return (dispatch) => {
+    dispatch(getAllAccountStart());
+    axios
+      .patch(`${BASE_URL}/admin/account/${id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllAccount());
+        } else {
+          return dispatch(getAllAccountFail());
+        }
+      })
+      .catch((err) => dispatch(getAllAccountFail()));
+  };
+};
+export const lockOrUnlockAccountPatient = (id, data) => {
+  return (dispatch) => {
+    dispatch(getAllAccountStart());
+    axios
+      .patch(`${BASE_URL}/admin/account/lockOrUnlock/${id}`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllAccount());
+        } else {
+          return dispatch(getAllAccountFail());
+        }
+      })
+      .catch((err) => dispatch(getAllAccountFail()));
+  };
+};
 
 //booking
 export const getAllBookingStart = () => {
@@ -204,11 +234,11 @@ export const updateDoctor = (id, data) => {
   };
 };
 
-export const lockAccountDoctor = (id) => {
+export const lockOrUnlockAccountDoctor = (id, data) => {
   return (dispatch) => {
     dispatch(getAllDoctorStart());
     axios
-      .patch(`${BASE_URL}/admin/doctor/locked/${id}`)
+      .patch(`${BASE_URL}/admin/doctor/locked/${id}`, data)
       .then((res) => {
         if (res.status === 200) {
           return dispatch(getAllDoctor());

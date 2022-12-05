@@ -9,14 +9,22 @@ import BASE_URL from '../../../utils/configURL';
 import Button from '../../common/Button/Button';
 import Modals from '../../Layout/Popper/Modal';
 //import redux
-import { openModal, hideModal, getAllAccount } from '../../../redux/action';
+import {
+  openModal,
+  hideModal,
+  getAllAccount,
+  updateAccount,
+  lockOrUnlockAccountPatient,
+} from '../../../redux/action';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 const cx = classNames.bind(styles);
 export default function Account() {
   const dispatch = useDispatch();
+  const mode = useSelector((state) => state.modal.data.mode);
   const { accounts, loading } = useSelector((state) => state.account);
+
   const [formData, setFormData] = useState('');
 
   useEffect(() => {
@@ -29,16 +37,29 @@ export default function Account() {
 
   const showModal = (mode, record) => {
     dispatch(openModal(mode, record));
+    setFormData(record);
   };
   const handleOk = async () => {
-    const data = await axios.post(`${BASE_URL}/user/signUp`, formData);
-    console.log(data);
+    if (mode === 'Add') {
+      console.log('add');
+    }
+    if (mode === 'Edit') {
+      Promise.all([
+        dispatch(updateAccount(formData?._id, formData)),
+        dispatch(hideModal()),
+      ]);
+    }
     dispatch(hideModal());
   };
   const onCancel = () => {
     dispatch(hideModal());
   };
-  const lockAccount = () => {};
+  const lockAccount = (id) => {
+    dispatch(lockOrUnlockAccountPatient(id, { status: true }));
+  };
+  const UnlockAccount = (id) => {
+    dispatch(lockOrUnlockAccountPatient(id, { status: false }));
+  };
   const columns = [
     {
       title: 'STT',
@@ -80,7 +101,7 @@ export default function Account() {
       title: 'Action',
       key: 'action',
       fixed: 'right',
-      width: 200,
+      width: 250,
       render: (text, record, index) => (
         <Space size="middle">
           <Button
@@ -89,12 +110,21 @@ export default function Account() {
           >
             sửa
           </Button>
-          <Button
-            className={`btn-danger bg-danger`}
-            onClick={() => lockAccount(record.id)}
-          >
-            Khóa
-          </Button>
+          {record.status === true ? (
+            <Button
+              className={`btn-danger bg-danger`}
+              onClick={() => UnlockAccount(record._id)}
+            >
+              Mở Khóa
+            </Button>
+          ) : (
+            <Button
+              className={`btn-danger bg-danger`}
+              onClick={() => lockAccount(record._id)}
+            >
+              Khóa
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -108,27 +138,6 @@ export default function Account() {
         </Button>
         <Modals onCancel={onCancel} handleOk={handleOk}>
           <form className={cx('form')}>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Tên</label>
-              <input
-                onChange={handleOnChange}
-                type="text"
-                placeholder="vui lòng nhập vào tên"
-                value={formData?.lastName || ''}
-                name="lastName"
-              />
-            </div>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Họ</label>
-              <input
-                onChange={handleOnChange}
-                type="text"
-                placeholder="vui lòng nhập vào Họ"
-                value={formData?.firstName || ''}
-                name="firstName"
-              />
-            </div>
-
             <div className={cx('form-item')}>
               <label htmlFor="">Tài Khoản</label>
               <input
@@ -148,14 +157,6 @@ export default function Account() {
                 value={formData?.password || ''}
                 name="password"
               />
-            </div>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Quyền</label>
-              <select name="accountType" id="" defaultValue={formData || ''}>
-                <option value="Admin">Admin</option>
-                <option value="Người dùng">Người dùng</option>
-                <option value="bác sĩ">Bác sĩ</option>
-              </select>
             </div>
           </form>
         </Modals>

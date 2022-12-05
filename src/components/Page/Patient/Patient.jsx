@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import Modals from '../../Layout/Popper/Modal';
 
 import styles from './patient.module.scss';
+import { formatPrice } from '../../../utils/numberFormat';
 const cx = classNames.bind(styles);
 export default function Patient() {
   const dispatch = useDispatch();
@@ -68,6 +69,11 @@ export default function Patient() {
       title: 'Ngày Khám',
       dataIndex: 'date',
       key: 'date',
+      defaultSortOrder: 'ascend',
+      // sorter: (a, b) => a?.date.localeCompare(b.time),
+      render: (idx, data) =>
+        new Date(Date.parse(data?.date)).toLocaleDateString(),
+      // sorter: (a, b) => a.date.localeCompare(b.date),
     },
     {
       title: 'Giờ Khám',
@@ -80,6 +86,28 @@ export default function Patient() {
       key: 'price',
     },
     {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      render: (idx, data) => {
+        if (data?.status === true) {
+          return {
+            props: {
+              style: { color: 'blue' },
+            },
+            children: 'Đã khám',
+          };
+        } else {
+          return {
+            props: {
+              style: { color: 'red' },
+            },
+            children: 'chưa khám',
+          };
+        }
+      },
+    },
+    {
       title: 'Action',
       key: 'action',
       fixed: 'right',
@@ -90,37 +118,141 @@ export default function Patient() {
             className={`btn-primary bg-primary`}
             onClick={() => showModal('Edit', record)}
           >
-            Khám
+            Xem chi tiết
           </Button>
         </Space>
       ),
     },
   ];
-
   return (
     <>
       <div className={cx('btn-create')}>
         <Modals onCancel={onCancel} handleOk={handleOk}>
           <form className={cx('form')}>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Tên chức vụ</label>
-              <input
-                type="text"
-                name="namePosition"
-                onChange={handleOnChange}
-                value={formData?.namePosition || ''}
-                placeholder="vui lòng nhập vào tên chức vụ"
-              />
+            <div className="d-flex w-100">
+              <div className="col-md-4 me-3">
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Họ và tên</label>
+                  <input
+                    type="text"
+                    value={
+                      `${formData?.patient?.account?.people?.lastName} ${formData?.patient?.account?.people?.firstName}` ||
+                      ''
+                    }
+                    disabled
+                  />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Số điện thoại</label>
+                  <input
+                    type="number"
+                    value={formData?.patient?.account?.people?.phone || ''}
+                    disabled
+                  />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Email</label>
+                  <input
+                    type="email"
+                    value={formData?.patient?.account?.people?.email || ''}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="col-md-4 me-3">
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Họ tên bác sĩ</label>
+                  <input
+                    type="text"
+                    value={
+                      `${formData?.doctor?.account?.people?.lastName} ${formData?.doctor?.account?.people?.firstName}` ||
+                      ''
+                    }
+                    disabled
+                  />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Khoa khám</label>
+                  <input
+                    type="text"
+                    value={formData?.department?.nameDepartment || ''}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Ngày Đặt</label>
+                  <input
+                    type="text"
+                    value={
+                      new Date(
+                        Date.parse(formData?.date)
+                      ).toLocaleDateString() || ''
+                    }
+                    disabled
+                  />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Thời gian Khám</label>
+                  <input type="text" value={formData?.time || ''} disabled />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Giá tiền</label>
+                  <input
+                    type="text"
+                    value={formatPrice(formData?.price) || ''}
+                    disabled
+                  />
+                </div>
+              </div>
             </div>
-            <div className={cx('form-item')}>
-              <label htmlFor="">Mô tả</label>
-              <input
-                type="text"
-                name="description"
-                onChange={handleOnChange}
-                value={formData?.description || ''}
-                placeholder="vui lòng nhập vào Mô tả"
-              />
+            <div className="d-flex w-100">
+              <div className="col-md-6 me-5 ">
+                <textarea
+                  name=""
+                  id=""
+                  className="w-100"
+                  rows="5"
+                  value={formData?.message || ''}
+                  disabled
+                ></textarea>
+              </div>
+              <div className="col-md-4">
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Chuẩn đoán của bác sĩ</label>
+                  <input
+                    type="text"
+                    placeholder="chuẩn đoán của bác sĩ"
+                    name="diseases"
+                    onChange={handleOnChange}
+                    value={formData?.diseases || ''}
+                    disabled
+                  />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Ghi chú đính kèm</label>
+                  <input
+                    type="text"
+                    placeholder="Lời dặn của bác sĩ"
+                    name="note"
+                    onChange={handleOnChange}
+                    value={formData?.note || ''}
+                    disabled
+                  />
+                </div>
+                <div className={cx('form-item')}>
+                  <label htmlFor="">Đơn thuốc</label>
+                  <input
+                    type="text"
+                    placeholder="Đơn thuốc"
+                    name="medicine"
+                    onChange={handleOnChange}
+                    value={formData?.medicine || ''}
+                    disabled
+                  />
+                </div>
+              </div>
             </div>
           </form>
         </Modals>
