@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './statistic.module.scss';
-import { Line } from '@ant-design/charts';
+import { Area, Line } from '@ant-design/charts';
 import { getAllStatisticByMonthOfYear } from './../../../redux/action';
 import { DatePicker, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,7 @@ export default function Statistic() {
     );
   }, []);
   const onChange = (date, dateString) => {
+    console.log(data);
     setMonth(dateString.split('-')[1] * 1);
     dispatch(
       getAllStatisticByMonthOfYear(
@@ -31,8 +32,8 @@ export default function Statistic() {
 
   const config = {
     data,
-    xField: '_id',
-    yField: 'total',
+    xField: 'day',
+    yField: 'value',
     label: {},
     point: {
       size: 2,
@@ -43,9 +44,11 @@ export default function Statistic() {
         lineWidth: 2,
       },
     },
+    smooth: true,
     tooltip: {
       showMarkers: false,
     },
+
     state: {
       active: {
         style: {
@@ -61,11 +64,11 @@ export default function Statistic() {
       },
     ],
   };
-
+  // console.log(data);
   return (
     <>
       <h1 className={cx('title')}>
-        Thống kê số lượng bệnh nhân theo từng tháng
+        Thống kê số lượng bệnh nhân trong ngày theo từng tháng
       </h1>
       <div className={cx('date')}>
         <span>Chọn tháng </span>
@@ -73,7 +76,7 @@ export default function Statistic() {
           <DatePicker onChange={onChange} picker="month" />
         </Space>
       </div>
-      {data ? <Line {...config} /> : ''}
+      {data ? <Area {...config} /> : 'Không có lịch khám'}
       <p className="w-100 text-center mt-3">
         Biểu đồ hiển thị số lượng đặt lịch khám của tháng {month}
       </p>

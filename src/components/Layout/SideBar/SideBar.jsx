@@ -31,6 +31,11 @@ export default function SideBar() {
         to: 'quan-ly-bac-si',
       },
       {
+        icon: <FontAwesomeIcon icon={faHouseChimney}></FontAwesomeIcon>,
+        title: 'Thời gian làm việc',
+        to: 'quan-ly-thoi-gian-lam-viec',
+      },
+      {
         icon: <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>,
         title: 'Danh sách bệnh nhân',
         to: 'benh-nhan',

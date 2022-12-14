@@ -145,10 +145,10 @@ export default function Doctor() {
     dispatch(hideModal());
   };
   const handleLockAccountDoctor = (id) => {
-    dispatch(lockOrUnlockAccountDoctor(id, { status: false }));
+    dispatch(lockOrUnlockAccountDoctor(id, { status: true }));
   };
   const handleUnLockAccountDoctor = (id) => {
-    dispatch(lockOrUnlockAccountDoctor(id, { status: true }));
+    dispatch(lockOrUnlockAccountDoctor(id, { status: false }));
   };
   const columns = [
     {
@@ -237,7 +237,7 @@ export default function Doctor() {
     },
     {
       title: 'Hình ảnh',
-      width: 150,
+      width: 100,
       dataIndex: 'image',
       key: 'image',
       className: `${cx('image')}`,
@@ -258,7 +258,7 @@ export default function Doctor() {
       dataIndex: 'status',
       key: 'status',
       render: (index, data) =>
-        data?.status === true ? 'Đang hoạt động' : 'Đã khóa',
+        data?.account?.status === false ? 'Đang hoạt động' : 'Đã khóa',
     },
     {
       title: 'Action',
@@ -273,7 +273,7 @@ export default function Doctor() {
           >
             sửa
           </Button>
-          {record?.status === true ? (
+          {record?.account?.status === false ? (
             <Button
               className={`btn-danger bg-danger`}
               onClick={() => handleLockAccountDoctor(record._id)}
