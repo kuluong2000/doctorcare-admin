@@ -40,10 +40,10 @@ export default function SideBar() {
         title: 'Danh sách bệnh nhân',
         to: 'benh-nhan',
       },
-      {
-        icon: <FontAwesomeIcon icon={faDesktop}></FontAwesomeIcon>,
-        title: 'Quản lý người dùng',
-      },
+      // {
+      //   icon: <FontAwesomeIcon icon={faDesktop}></FontAwesomeIcon>,
+      //   title: 'Quản lý người dùng',
+      // },
       {
         icon: <FontAwesomeIcon icon={faDesktop}></FontAwesomeIcon>,
         title: 'Quản lý khoa',
@@ -73,11 +73,11 @@ export default function SideBar() {
   }
   if (data_user.role.nameRole === 'doctor') {
     sideBarMenu = [
-      {
-        icon: <FontAwesomeIcon icon={faHouseChimney}></FontAwesomeIcon>,
-        title: 'Quản lý tài khoản',
-        to: 'quan-ly-tai-khoan',
-      },
+      // {
+      //   icon: <FontAwesomeIcon icon={faHouseChimney}></FontAwesomeIcon>,
+      //   title: 'Quản lý tài khoản',
+      //   to: 'quan-ly-tai-khoan',
+      // },
 
       {
         icon: <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>,
@@ -108,14 +108,21 @@ export default function SideBar() {
       </div>
       <div className={cx('sidebar-profile')}>
         <div className={cx('sidebar-profile-pic')}>
-          <img src={require('../../../assets/images/avatar.jpg')} alt="" />
+          <img
+            src={
+              data_user?.people?.image
+                ? `http://127.0.0.1:3030/${data_user?.people?.image}`
+                : require('../../../assets/images/avatar.jpg')
+            }
+            alt=""
+          />
         </div>
         <div className={cx('sidebar-profile-info')}>
           <span>Welcome,</span>
           <h2>
             {data_user
-              ? `${data_user?.people?.firstName || ''} ${
-                  data_user?.people?.lastName || ''
+              ? `${data_user?.people?.lastName || ''} ${
+                  data_user?.people?.firstName || ''
                 }`
               : ''}
           </h2>

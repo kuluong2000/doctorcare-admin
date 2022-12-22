@@ -82,15 +82,19 @@ export default function Header({ data }) {
             >
               <div className={cx('navbar-item', 'navbar-dropdrow')}>
                 <img
-                  src={require('../../../assets/images/avatar.jpg')}
+                  src={
+                    data?.account[0].people?.image
+                      ? `http://127.0.0.1:3030/${data?.account[0].people?.image}`
+                      : require('../../../assets/images/avatar.jpg')
+                  }
                   alt=""
                   className={cx('avatar')}
                 />
                 <p className={cx('user-name')}>
                   {/* {`${data[0]?.account?.people?.firstName} ${data[0]?.account?.people?.lastName}` ||
                     ''} */}
-                  {`${data?.account[0].people?.firstName || ''} ${
-                    data?.account[0].people?.lastName || ''
+                  {`${data?.account[0].people?.lastName || ''} ${
+                    data?.account[0].people?.firstName || ''
                   }` || ''}
                 </p>
                 <button>

@@ -84,6 +84,8 @@ export default function Schedule() {
       title: 'Ngày Khám',
       dataIndex: 'date',
       key: 'date',
+      render: (idx, data) =>
+        new Date(Date.parse(data?.date)).toLocaleDateString(),
     },
     {
       title: 'Giờ Khám',
