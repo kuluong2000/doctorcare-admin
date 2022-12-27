@@ -39,6 +39,8 @@ export default function Doctor() {
     department: '',
     position: '',
     description: '',
+    education: '',
+    oldWork: '',
   });
   const { loading, dataDoctor, dataDepartment, dataPosition } = useSelector(
     (state) => state.admin
@@ -77,6 +79,8 @@ export default function Doctor() {
       department: record?.department?._id,
       position: record?.position?._id,
       description: record?.description,
+      education: record?.education,
+      oldWork: record?.oldWork,
     });
     dispatch(openModal(mode, record));
   };
@@ -425,6 +429,26 @@ export default function Doctor() {
               </select>
             </div>
 
+            <div className={cx('form-item')}>
+              <label htmlFor="">Học vấn</label>
+              <input
+                type="text"
+                placeholder="vui lòng nhập vào Học vấn"
+                name="education"
+                onChange={handleOnChange}
+                value={formData?.education || ''}
+              />
+            </div>
+            <div className={cx('form-item')}>
+              <label htmlFor="">Nơi làm việc cũ</label>
+              <input
+                type="text"
+                placeholder="vui lòng nhập vào nơi làm việc cũ"
+                name="oldWork"
+                onChange={handleOnChange}
+                value={formData?.oldWork || ''}
+              />
+            </div>
             <div className={cx('form-item')}>
               <label htmlFor="">Mô tả</label>
               <input
