@@ -428,7 +428,6 @@ export default function Doctor() {
                   ))}
               </select>
             </div>
-
             <div className={cx('form-item')}>
               <label htmlFor="">Học vấn</label>
               <input
