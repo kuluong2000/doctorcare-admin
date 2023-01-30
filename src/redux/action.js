@@ -264,6 +264,23 @@ export const lockScheduleOfDoctor = (id, data) => {
       .catch((err) => dispatch(getAllDoctorFail()));
   };
 };
+export const unLockScheduleOfDoctor = (id) => {
+  return (dispatch) => {
+    dispatch(getAllDoctorStart());
+    console.log(id);
+    axios
+      .patch(`${BASE_URL}/admin/doctor/unLockScheduleOfDoctor/${id}`)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getAllDoctor());
+        } else {
+          return dispatch(getAllDoctorFail());
+        }
+      })
+      .catch((err) => dispatch(getAllDoctorFail()));
+  };
+};
+
 //department
 export const getAllDepartmentStart = () => {
   return {

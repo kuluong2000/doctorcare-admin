@@ -257,7 +257,7 @@ export default function Doctor() {
       ),
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       width: 100,
       dataIndex: 'status',
       key: 'status',
@@ -265,7 +265,7 @@ export default function Doctor() {
         data?.account?.status === false ? 'Đang hoạt động' : 'Đã khóa',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       width: 250,
       key: 'action',
       fixed: 'right',

@@ -83,17 +83,17 @@ export default function Position() {
       render: (text, record, index) => index,
     },
     {
-      title: 'Name',
+      title: 'Tên',
       dataIndex: 'namePosition',
       key: 'namePosition',
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       fixed: 'right',
       width: 200,

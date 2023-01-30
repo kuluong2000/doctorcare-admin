@@ -77,28 +77,28 @@ export default function Medicine() {
       render: (text, record, index) => index,
     },
     {
-      title: 'Name',
+      title: 'Tên thuốc',
       dataIndex: 'nameMedicine',
       key: 'nameMedicine',
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
     },
     {
-      title: 'Quantity ',
+      title: 'Số lượng ',
       dataIndex: 'quantity',
       key: 'quantity',
       width: 100,
     },
+    // {
+    //   title: 'CreateAt',
+    //   dataIndex: 'createAt',
+    //   key: 'createAt',
+    // },
     {
-      title: 'CreateAt',
-      dataIndex: 'createAt',
-      key: 'createAt',
-    },
-    {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       fixed: 'right',
       width: 200,

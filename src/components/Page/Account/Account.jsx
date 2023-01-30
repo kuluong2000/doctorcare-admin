@@ -98,7 +98,7 @@ export default function Account() {
       },
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       fixed: 'right',
       width: 250,

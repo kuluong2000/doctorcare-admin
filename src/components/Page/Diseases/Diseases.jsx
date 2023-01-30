@@ -92,12 +92,12 @@ export default function Diseases() {
       render: (text, record, index) => index,
     },
     {
-      title: 'Name',
+      title: 'Tên bệnh',
       dataIndex: 'nameDiseases',
       key: 'nameDiseases',
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
     },
@@ -112,7 +112,7 @@ export default function Diseases() {
     },
 
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       fixed: 'right',
       width: 200,

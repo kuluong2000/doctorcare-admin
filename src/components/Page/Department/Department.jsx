@@ -101,22 +101,22 @@ export default function Department() {
       render: (text, record, index) => index,
     },
     {
-      title: 'Name',
+      title: 'Tên khoa',
       dataIndex: 'nameDepartment',
       key: 'nameDepartment',
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
     },
     {
-      title: 'Price',
+      title: 'Giá',
       dataIndex: 'price',
       key: 'price',
     },
     {
-      title: 'Image',
+      title: 'Hình Ảnh',
       dataIndex: 'image',
       key: 'image',
       width: 200,
@@ -126,7 +126,7 @@ export default function Department() {
       ),
     },
     {
-      title: 'Action',
+      title: 'Hành Động',
       key: 'action',
       fixed: 'right',
       width: 200,

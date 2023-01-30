@@ -8,6 +8,7 @@ import {
   hideModal,
   getAllDoctor,
   lockScheduleOfDoctor,
+  unLockScheduleOfDoctor,
 } from '../../../redux/action';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../common/Button/Button';
@@ -58,7 +59,9 @@ export default function DoctorWorkingTime() {
   const onCancel = () => {
     dispatch(hideModal());
   };
-
+  const unLockSchedule = (id) => {
+    dispatch(unLockScheduleOfDoctor(id));
+  };
   const columns = [
     {
       title: 'Họ',
@@ -162,7 +165,7 @@ export default function DoctorWorkingTime() {
       ),
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       width: 100,
       dataIndex: 'status',
       key: 'status',
@@ -170,7 +173,7 @@ export default function DoctorWorkingTime() {
         data?.status === true ? 'Đang hoạt động' : 'Đã khóa',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       width: 250,
       key: 'action',
       fixed: 'right',
@@ -184,9 +187,18 @@ export default function DoctorWorkingTime() {
               Đóng lịch làm việc
             </Button>
           ) : (
-            `lịch sẽ mở vào ngày ${new Date(
-              record?.timeStamp
-            ).toLocaleDateString()}  `
+            <div>
+              <strong>
+                Lịch sẽ mở vào ngày
+                {new Date(record?.timeStamp).toLocaleDateString()}
+              </strong>
+              <Button
+                onClick={() => unLockSchedule(record._id)}
+                className={`btn-primary bg-primary mt-2`}
+              >
+                Mở Khóa Ngay
+              </Button>
+            </div>
           )}
         </Space>
       ),
